@@ -29,6 +29,7 @@
             </el-tooltip>
           </div>
           <div>
+			<el-button size="mini" icon="el-icon-document" @click="previewXML">预览xml</el-button>  
             <el-button size="mini" icon="el-icon-download" @click="saveXML(true)">下载xml</el-button>
             <el-button size="mini" icon="el-icon-picture" @click="saveImg('svg', true)">下载svg</el-button>
             <el-button size="mini" type="primary" @click="save">保存模型</el-button>
@@ -44,7 +45,9 @@
         </el-aside>
       </el-container>
     </el-container>
-
+    <el-dialog title="预览" width="70%" :visible.sync="previewModelVisible" append-to-body destroy-on-close>
+      <highlightjs :language="previewType" :code="previewResult" style="height: 80vh" />
+    </el-dialog>
   </div>
 </template>
 
@@ -57,6 +60,7 @@ import BpmData from './BpmData'
 import getInitStr from './flowable/init'
 // 引入flowable的节点文件
 import flowableModdle from './flowable/flowable.json'
+
 export default {
   name: 'WorkflowBpmnModeler',
   components: {
@@ -88,7 +92,10 @@ export default {
     return {
       modeler: null,
       taskList: [],
-      zoom: 1
+      zoom: 1,
+	  previewModelVisible: false,
+	  previewResult: "",
+	  previewType: "xml",
     }
   },
   watch: {
@@ -111,6 +118,7 @@ export default {
         flowable: flowableModdle
       }
     })
+	
     // 新增流程定义
     if (!this.xml) {
       this.newDiagram()
@@ -276,6 +284,13 @@ export default {
         if (rootElements[i].$type === 'bpmn:Process') return rootElements[i]
       }
     },
+	previewXML() {
+	  this.modeler.saveXML({ format: true }).then(({ xml }) => {
+	    this.previewResult = xml;
+	    this.previewType = "xml";
+	    this.previewModelVisible = true;
+	  });
+	},
     async saveXML(download = false) {
       try {
         const { xml } = await this.modeler.saveXML({ format: true })

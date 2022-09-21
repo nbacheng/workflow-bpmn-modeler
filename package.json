@@ -1,8 +1,8 @@
 {
-  "name": "workflow-bpmn-modeler",
-  "version": "0.2.8",
+  "name": "workflow-bpmn-modeler-jeecgboot",
+  "version": "0.1.2",
   "description": "基于 `vue` 和 `bpmn.io@7.0` ，实现 flowable 的 modeler 模型设计器",
-  "main": "dist/workflow-bpmn-modeler.umd.min.js",
+  "main": "dist/workflow-bpmn-modeler-jeecgboot.umd.min.js",
   "scripts": {
     "dev": "vue-cli-service serve --open",
     "demo": "cross-env NODE_ENV=demo vue-cli-service build",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GoldSubmarine/workflow-bpmn-modeler.git"
+    "url": "git+https://gitee.com/nbacheng/workflow-bpmn-modeler.git"
   },
   "keywords": [
     "vue",
@@ -27,16 +27,18 @@
     "模型设计器"
   ],
   "author": {
-    "name": "charles",
-    "email": "997462392@qq.com"
+    "name": "nbacheng",
+    "email": "498871963@qq.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GoldSubmarine/workflow-bpmn-modeler/issues"
+    "url": "https://gitee.com/nbacheng/workflow-bpmn-modeler/issues"
   },
   "dependencies": {
+    "@highlightjs/vue-plugin": "^1.0.2",
     "bpmn-js": "^7.2.1",
     "element-ui": "^2.12.0",
+    "highlight.js": "^11.6.0",
     "vue": "^2.6.10",
     "xcrud": "0.4.1"
   },
@@ -46,8 +48,8 @@
     "@vue/cli-service": "^4.4.6",
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.2",
-    "eslint": "^7.5.0",
-    "eslint-plugin-vue": "^6.2.2",
+    "eslint": "7.15.0",
+    "eslint-plugin-vue": "7.2.0",
     "sass": "^1.26.10",
     "sass-loader": "^9.0.2",
     "vue-template-compiler": "^2.6.11"

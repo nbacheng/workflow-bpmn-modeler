@@ -13,7 +13,8 @@
       </template>
       <template #multiInstance>
         <el-badge :is-dot="hasMultiInstance">
-          <el-button size="small" @click="dialogName = 'multiInstanceDialog'">编辑</el-button>
+		  <el-button size="small" @click="clickMultiInstance">编辑</el-button>	
+          <!-- <el-button size="small" @click="dialogName = 'multiInstanceDialog'">编辑</el-button> -->
         </el-badge>
       </template>
     </x-form>
@@ -113,7 +114,7 @@ export default {
             name: 'userType',
             label: '人员类型',
             dic: _this.userTypeOption,
-            show: !!_this.showConfig.userType
+            show: !!_this.showConfig.userType 
           },
           {
             xType: 'select',
@@ -122,7 +123,7 @@ export default {
             allowCreate: true,
             filterable: true,
             dic: { data: _this.users, label: 'name', value: 'id' },
-            show: !!_this.showConfig.assignee && _this.formData.userType === 'assignee'
+            show: !!_this.showConfig.assignee && _this.formData.userType === 'assignee' 
           },
           {
             xType: 'select',
@@ -132,7 +133,7 @@ export default {
             allowCreate: true,
             filterable: true,
             dic: { data: _this.users, label: 'name', value: 'id' },
-            show: !!_this.showConfig.candidateUsers && _this.formData.userType === 'candidateUsers'
+            show: (!!_this.showConfig.candidateUsers && _this.formData.userType === 'candidateUsers') 
           },
           {
             xType: 'select',
@@ -142,7 +143,7 @@ export default {
             allowCreate: true,
             filterable: true,
             dic: { data: _this.groups, label: 'name', value: 'id' },
-            show: !!_this.showConfig.candidateGroups && _this.formData.userType === 'candidateGroups'
+            show: (!!_this.showConfig.candidateGroups && _this.formData.userType === 'candidateGroups') 
           },
           {
             xType: 'slot',
@@ -245,19 +246,28 @@ export default {
   watch: {
     'formData.userType': function(val, oldVal) {
       if (oldVal) {
-        const types = ['assignee', 'candidateUsers', 'candidateGroups']
-        types.forEach(type => {
+		if(this.hasMultiInstance) {
+		  const types = ['candidateUsers', 'candidateGroups']
+		  types.forEach(type => {
+		  delete this.element.businessObject.$attrs[`flowable:${type}`]
+		  delete this.formData[type]})	
+		}  
+		else {
+		  const types = ['assignee', 'candidateUsers', 'candidateGroups']
+          types.forEach(type => {
           delete this.element.businessObject.$attrs[`flowable:${type}`]
-          delete this.formData[type]
-        })
+          delete this.formData[type]})
+		}
       }
     },
-    'formData.assignee': function(val) {
+    'formData.assignee': function(val) {	
       if (this.formData.userType !== 'assignee') {
         delete this.element.businessObject.$attrs[`flowable:assignee`]
         return
       }
-      this.updateProperties({ 'flowable:assignee': val })
+	  if (!this.hasMultiInstance) {
+		this.updateProperties({ 'flowable:assignee': val }) 
+	  }
     },
     'formData.candidateUsers': function(val) {
       if (this.formData.userType !== 'candidateUsers') {
@@ -266,7 +276,7 @@ export default {
       }
       this.updateProperties({ 'flowable:candidateUsers': val?.join(',') })
     },
-    'formData.candidateGroups': function(val) {
+    'formData.candidateGroups': function(val) {	
       if (this.formData.userType !== 'candidateGroups') {
         delete this.element.businessObject.$attrs[`flowable:candidateGroups`]
         return
@@ -329,10 +339,12 @@ export default {
   created() {
     let cache = commonParse(this.element)
     cache = userTaskParse(cache)
+	console.log("create cache=",cache)
     this.formData = cache
     this.computedExecutionListenerLength()
     this.computedTaskListenerLength()
-    this.computedHasMultiInstance()
+    //this.computedHasMultiInstance()
+	this.setMultiInstance()
   },
   methods: {
     computedExecutionListenerLength() {
@@ -362,9 +374,44 @@ export default {
       }
       this.dialogName = ''
     },
+	setMultiInstance() {
+	  if (this.element.businessObject.loopCharacteristics) {
+		const oldUserType = this.formData.userType
+		console.log("setMultiInstance this.formData=",this.formData)
+		this.hasMultiInstance = true
+		this.formData.userType = 'assignee'
+		this.updateProperties({ 'flowable:assignee': '${assignee}' }) 
+		this.userTypeOption =  this.userTypeOption.filter(item => {
+	  	      return item.value != 'assignee';
+	  	    }); 	
+		if (oldUserType === 'candidateGroups') {
+			this.formData.userType = 'candidateGroups'
+		} else {
+			this.formData.userType = 'candidateUsers'
+		}	
+	  }
+	  else {
+		this.hasMultiInstance = false  
+		this.userTypeOption =  this.userTypeOption.filter(item => {
+		      return item.value != 'assignee';
+		    });
+		this.userTypeOption.unshift({ label: '指定人员', value: 'assignee' })	
+	  }		
+	},
+	clickMultiInstance() {		
+		  if (this.formData.userType === 'candidateUsers' || (this.formData.userType === 'candidateGroups')) {
+			  this.dialogName = 'multiInstanceDialog'
+			  console.log("clickMultiInstance this.formData=",this.formData)
+		  }
+		  else {
+			 this.$message.error("配置多实例会签人员类型选择候选人员或候选组") 
+		  }
+	},
+	
     finishMultiInstance() {
-      if (this.dialogName === 'multiInstanceDialog') {
-        this.computedHasMultiInstance()
+      if (this.dialogName === 'multiInstanceDialog') {	
+		 this.setMultiInstance() 
+		 //this.computedHasMultiInstance()
       }
       this.dialogName = ''
     }

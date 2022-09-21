@@ -6,7 +6,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/workflow-bpmn-modeler.svg?style=flat)](https://www.npmjs.org/package/workflow-bpmn-modeler)
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
-🔥 本项目基于 `vue` 和 `bpmn.io@7.0` ，实现 flowable 的工作流设计器
+🔥 本项目基于 `vue` 和 `bpmn.io@7.0` ，实现 flowable 的工作流设计器，nbacheng修改支持会签功能和预览功能
 
 ## 预览 📟
 
@@ -20,7 +20,7 @@
 
 ```bash
 # 安装
-yarn add workflow-bpmn-modeler
+yarn add workflow-bpmn-modeler-jeecgboot
 ```
 
 ## 使用说明 👣

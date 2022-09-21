@@ -1,4 +1,4 @@
-English | [简体中文](./README_CN.md)
+English | [�体中文](./README_CN.md)
 
 # workflow-bpmn-modeler
 
@@ -6,7 +6,7 @@ English | [简体中文](./README_CN.md)
 [![NPM Downloads](https://img.shields.io/npm/dm/workflow-bpmn-modeler.svg?style=flat)](https://www.npmjs.org/package/workflow-bpmn-modeler)
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
-🔥 This project implements flowable's workflow designer based on `vue` and `bpmn.io@7.0`
+🔥 This project implements flowable's workflow designer based on `vue` and `bpmn.io@7.0`, add by nbacheng for Support countersignature and preview
 
 ## Preview 📟
 
@@ -16,11 +16,11 @@ English | [简体中文](./README_CN.md)
 
 👉 https://goldsubmarine.github.io/workflow-bpmn-modeler/demo/
 
-## Install ⏳
+## Install �
 
 ```bash
 # Install
-yarn add workflow-bpmn-modeler
+yarn add workflow-bpmn-modeler-jeecgboot
 ```
 
 ## How to use 👣

@@ -50,6 +50,7 @@ export default {
             xType: 'input',
             name: 'collection',
             label: '集合',
+			dic: [{ label: '串行', value: true }],
             tooltip: '属性会作为表达式进行解析。如果表达式解析为字符串而不是一个集合，<br />不论是因为本身配置的就是静态字符串值，还是表达式计算结果为字符串，<br />这个字符串都会被当做变量名，并从流程变量中用于获取实际的集合。'
           },
           {
@@ -82,6 +83,10 @@ export default {
     const cache = JSON.parse(JSON.stringify(this.element.businessObject.loopCharacteristics ?? {}))
     cache.completionCondition = cache.completionCondition?.body
     this.formData = formatJsonKeyValue(cache)
+	this.formData.collection = 'approval'
+	this.formData.elementVariable = 'assignee'
+	this.formData.completionCondition = '${nrOfCompletedInstances>=nrOfInstances}'
+	
   },
   methods: {
     updateElement() {
