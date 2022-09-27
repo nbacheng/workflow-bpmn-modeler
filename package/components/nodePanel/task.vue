@@ -379,6 +379,7 @@ export default {
 		const oldUserType = this.formData.userType
 		console.log("setMultiInstance this.formData=",this.formData)
 		this.hasMultiInstance = true
+		this.formData.assignee = '${assignee}'
 		this.formData.userType = 'assignee'
 		this.updateProperties({ 'flowable:assignee': '${assignee}' }) 
 		this.userTypeOption =  this.userTypeOption.filter(item => {
